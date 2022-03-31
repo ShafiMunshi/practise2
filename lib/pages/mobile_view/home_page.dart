@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:practise2/model/color_const.dart';
+import 'package:practise2/model/strring.dart';
 
-import '../widgets/widgets.dart';
-import '../widgets/widgets2.dart';
+import '../../widgets/widgets.dart';
+import '../../widgets/widgets2.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -29,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
           style: GoogleFonts.ptSerif(
               fontWeight: FontWeight.bold,
               color: Appcolor.cnColor,
-              fontSize: 33),
+              fontSize: 33.sp),
         ),
       ),
     ),
@@ -37,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onTap: () {},
       child: Container(
         alignment: Alignment.center,
-        height: 100,
+        height: 130,
         width: double.infinity,
         decoration: BoxDecoration(
             border: Border.all(
@@ -77,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 30,
                     width: 30,
                     color: Appcolor.cnColor,
-                    child: Text('Logo'),
+                    child: FittedBox(child: Text('Logo')),
                   ),
                 ),
                 cont2(
@@ -92,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Grow closer to your loved ones\nby asking them this question.',
+                AllText.headingText,
                 style: TextStyle(
                     color: Appcolor.cnColor,
                     fontSize: 17,
@@ -103,21 +106,30 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 25,
             ),
             question[indexx],
-            
             SizedBox(
               height: 20,
             ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  indexx++;
-                });
-              },
-              child: cont1(
-                clr: Appcolor.cnColor,
-                txt: 'Copy this Question',
-              ),
-            ),
+            Builder(builder: (BuildContext context) {
+              return InkWell(
+                onTap: () {
+                  setState(() {
+                    indexx++;
+                    if (question[indexx] == 2) {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text('Waring- please stop tapping')));
+                    }
+                    // if (question[indexx] == 2) {
+                    //   return showToast(
+                    //       title: 'Warning', content: 'Please stop tappping');
+                    // }
+                  });
+                },
+                child: cont1(
+                  clr: Appcolor.cnColor,
+                  txt: 'Copy this Question',
+                ),
+              );
+            }),
             SizedBox(
               height: 20,
             ),
@@ -144,10 +156,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+void showToast({String? title, String? content}) {
+  Get.snackbar(
+    title!,
+    content!,
+    colorText: Colors.white,
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: Colors.green,
+  );
 }
